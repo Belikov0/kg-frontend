@@ -1,0 +1,15 @@
+@use '../mixins/mixins.scss' as *;
+
+@include b(swipper){
+    height: 100vh;
+    width: 1600px;
+
+    margin: 0 auto;
+    position: relative;
+    z-index: 0;
+
+    @include e(item){
+        height: 100vh;
+        width: 100%;
+    }
+}
