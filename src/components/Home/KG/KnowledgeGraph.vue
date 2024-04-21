@@ -12,14 +12,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useNamespace } from '@/utils/useNamespace';
-
-import createChart from './chart.js';
+// components
+import FunctionPanel from './FunctionPanel/FunctionPanel.vue';
 import nodes from '@/assets/data/nodes.json'
 import links from '@/assets/data/relationship.json'
 
-// 元素属性
+
+import { onMounted } from 'vue';
+import { useNamespace } from '@/utils/useNamespace';
+import createChart from './chart'
+
+import axios from 'axios'
+
 const props = defineProps({
     width: {
         type: Number
@@ -47,23 +51,21 @@ let nodeList = nodes.map(a => {
 
 let linkList = links.map(a => {
     const b = {
-        source: '',
-        target: '',
+        start: '',
+        end: '',
         type: ''
     }
-    b.source = '' + (a.source)
-    b.target = '' + (a.target)
+    b.start = '' + (a.start)
+    b.end = '' + (a.end)
     b.type = a.type
     return b
 })
 
 
 
-import FunctionPanel from './FunctionPanel/FunctionPanel.vue';
-
 const ns = useNamespace('graph')
 
-onMounted(async () => {
+onMounted(() => {
     createChart({
         nodes: nodeList,
         links: linkList

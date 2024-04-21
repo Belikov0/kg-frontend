@@ -1,60 +1,118 @@
+import tinycolor from 'tinycolor2'
 import * as d3 from 'd3'
-
-// interface Data {
-//     nodes: {
-//         id: string,
-//         labels: string,
-//         props: {
-//             name: string,
-//             description: string,
-//         }
-
-//     },
-//     links: {
-//         source: string,
-//         target: string,
-//         type: string
-//     }
-// }
-
-// 半径
 const radius = {
-    '课程': 50,
-    '章节': 40,
-    '节': 30,
-    '小节': 25
+    课程: 50,
+    章节: 40,
+    节: 30,
+    小节: 25
 }
 
 // 颜色
+const colors = {
+    课程: '#902921',
+    章节: '#294853',
+    节: '#837451',
+    小节: '#f8ad19'
+}
 
+/**
+ *
+ */
 
+const highlight = (color, percentage) => {
+    if (!percentage) {
+        percentage = 20
+    }
+    const originColor = tinycolor(color)
+    const brighterColor = originColor.brighten(percentage)
 
+    return brighterColor.toHexString()
+}
+
+/**
+ *
+ * @param e : 事件对象
+ * @param links ：所有的连接
+ * @param actives ：活动对象
+ */
+const onClickNode = (e, links, actives, activeCenter) => {
+    const t = d3.transition().duration(500).ease(d3.easeLinear)
+
+    // active状态
+    if (activeCenter.includes(d3.select(e.currentTarget).attr('identity'))) {
+        return
+    }
+    // 颜色复原
+    d3.selectAll('circle')
+        .filter((d) => {
+            return d ? actives.includes(d.id) : false
+        })
+        .transition(t)
+        .attr('fill', (d3) => colors[d3.labels])
+
+    actives.splice(0)
+    activeCenter.splice(0)
+    const id = d3.select(e.currentTarget).attr('identity')
+    activeCenter.push(id)
+
+    // 搜索现结点的相邻结点
+    const subs = links
+        .filter((item) => {
+            return item.source.id == '' + id || item.target.id == '' + id
+        })
+        .map((item) => {
+            if (item.source.id === id) {
+                return item.target.id
+            } else {
+                return item.source.id
+            }
+        })
+
+    subs.push(id)
+
+    // 高亮
+    d3.selectAll('circle')
+        .filter((d) => {
+            return d ? subs.includes(d.id) : false
+        })
+        .transition(t)
+        .attr('fill', (d) => {
+            return highlight(colors[d.labels])
+        })
+
+    d3.select(e.currentTarget).attr('fill', (d) => highlight(colors[d.labels], 50))
+
+    actives.push(...subs)
+}
 
 const createChart = (data) => {
     // Specify the dimensions of the chart.
-    const width = 928
-    const height = 680
-
-    // Specify the color scale.
-    const color = d3.scaleOrdinal(d3.schemeCategory10)
+    const width = 1600
+    const height = 1000
+    let actives = []
+    let activeCenter = []
 
     // The force simulation mutates links and nodes, so create a copy
     // so that re-evaluating this cell produces the same result.
-    const links = data.links.map((d) => ({ ...d }))
-    const nodes = data.nodes.map((d) => ({ ...d }))
+    const nodes = data.nodes.map((d, i) => ({ ...d, index: i }))
+    const links = data.links.map((d, i) => ({ ...d, index: i }))
+    console.log(nodes, links)
 
     // Create a simulation with several forces.
     const simulation = d3
         .forceSimulation(nodes)
         .force(
             'link',
-            d3.forceLink(links).id((d) => d.id).distance(200)
+            d3
+                .forceLink(links)
+                .id((d) => d.id)
+                .distance(200)
         )
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX())
         .force('y', d3.forceY())
         .force('collide', d3.forceCollide(60).iterations(10))
-        .force('charge', d3.forceManyBody().strength(-200));
+        .force('charge', d3.forceManyBody().strength(-200))
     // Create the SVG container.
     const svg = d3
         .select('#kg-svg')
@@ -66,7 +124,7 @@ const createChart = (data) => {
     // Add a line for each link, and a circle for each node.
     const link = svg
         .append('g')
-        .attr('stroke', '#fff')
+        .attr('stroke', '#000')
         .attr('stroke-opacity', 0.9)
         .selectAll('line')
         .data(links)
@@ -83,31 +141,30 @@ const createChart = (data) => {
         .data(nodes)
         .join('circle')
         .attr('r', (d) => radius[d.labels])
-        .attr('fill', (d) => color(d.labels))
-        // .text((d) => d.properties.description)
-        
+        .attr('fill', (d) => colors[d.labels])
+        .attr('identity', (d) => d.id)
+        // .attr('id')
+        .on('click', (e) => {
+            onClickNode(e, links, actives, activeCenter)
+        }) // 点击事件
 
     node.append('title').text((d) => d.prop.name)
 
     // Add a drag behavior.
     node.call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended))
 
-    // const g = node.selectAll('g')
     const nodeText = g
-      .append('g')
-      .selectAll('text')
-      .data(nodes)
-      .join('text')
-      .attr('dy', '.3em')
-    //   .attr('class', 'node-name')
-      .attr('text-anchor', 'middle')
-      .style('pointer-events', 'none')
-      .style('color', '#000')
-    //   .attr('fill', '')
-      .text(function (d) {
-        console.log(d)
-        return d.prop.name;
-      });
+        .append('g')
+        .selectAll('text')
+        .data(nodes)
+        .join('text')
+        .attr('dy', '.3em')
+        .attr('text-anchor', 'middle')
+        .style('pointer-events', 'none')
+        .text(function (d) {
+            return d.prop.name
+        })
+        .attr('fill', (d) => colors[d.labels])
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     simulation.on('tick', () => {
@@ -144,17 +201,12 @@ const createChart = (data) => {
         event.subject.fy = null
     }
 
-    // When this cell is re-run, stop the previous simulation. (This doesn’t
-    // really matter since the target alpha is zero and the simulation will
-    // stop naturally, but it’s a good practice.)
-    // invalidation.then(() => simulation.stop())
-
     const handleZoom = (e) => {
-        // d3.select('svg g').attr('transform', e.transform)
-        svg.attr('transform', e.transform)
+        const t = d3.transition().duration(500).ease(d3.easeLinear)
+        svg.transition(t).attr('transform', e.transform)
     }
 
-    let zoom = d3.zoom().on('zoom', handleZoom)
+    let zoom = d3.zoom().scaleExtent([0.5, 5]).on('zoom', handleZoom)
 
     svg.call(zoom)
 

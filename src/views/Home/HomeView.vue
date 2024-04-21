@@ -1,5 +1,5 @@
 <template>
-    <div :class="[ns.b()]" style="background-color: gray;">
+    <div :class="[ns.b()]" >
         <Nav></Nav>
         <div :class="[ns.b(), ns.is('left-right', true)]" @wheel="handleScroll" >
             <Sidebar :labels="labels" @click-item="handleClick"></Sidebar>

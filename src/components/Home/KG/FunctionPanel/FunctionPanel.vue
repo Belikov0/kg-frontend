@@ -1,8 +1,6 @@
 <template>
     <div :class="[ns.b()]">
         <div :class="[ns.e('button-wrapper')]">
-
-
             <button :class="[
                 ns.e('function-button'),
                 ns.is('active', active === index)
@@ -11,10 +9,8 @@
             </button>
         </div>
 
-
-        <component 
-            :class="ns.e('panel-item')"
-        v-for="(tag, index) in panelList" :is="tag" :key="index" v-show="active === index"></component>
+        <component :class="ns.e('panel-item')" v-for="(tag, index) in panelList" :is="tag" :key="index"
+            v-show="active === index"></component>
 
     </div>
 </template>

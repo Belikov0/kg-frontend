@@ -1,18 +1,30 @@
-import type { ExtractPropTypes, PropType } from "vue";
+import type { ExtractPropTypes } from 'vue'
 
-interface Node {
-    id: Number,
-    label: String | Number,
-    level?: Number,
-    name: String,
-    msg: String,
-    // Children: 
-} 
-
-export const nodeProps = {
-    info: {
-        type: Node,
+export interface Node {
+    id: string
+    labels: string | string[]
+    prop: {
+        name: string
+        description: string
     }
 }
 
-export type NodeType = ExtractPropTypes<typeof Node>
+export interface Link {
+    start: string
+    end: string
+    type: string
+}
+
+export const colors = {
+    课程: '#902921',
+    章节: '#294853',
+    节: '#837451',
+    小节: '#f8ad19'
+}
+
+export const radius = {
+    课程: 50,
+    章节: 40,
+    节: 30,
+    小节: 25
+}

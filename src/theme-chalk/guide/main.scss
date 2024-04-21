@@ -15,9 +15,9 @@
         margin: 0 auto;
     }
 
-    @include when(login) {
-        transform: translateY(-500px);
-    }
+    // @include when(login) {
+    //     transform: translateY(-500px);
+    // }
 
     @include e(title) {
         font-size: 70px;

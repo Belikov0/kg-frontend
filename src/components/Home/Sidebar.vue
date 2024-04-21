@@ -1,21 +1,12 @@
 <template>
     <div :class="[ns.b()]">
-        <!-- <div :class="[ns.e('icon-panel-wrapper')]">
-            <IconPanel :msg="msg" :src="src" @click="() => {
-            router.push('/guide')
-        }"></IconPanel>
-        </div> -->
+
 
         <div :class="[ns.e('item-group')]">
-            <div 
-                :class="[
-                    ns.e('item'),
-                    ns.is('active', active === index)
-                    ]" 
-                v-for="(label, index) in labels" 
-                :key="index"
-                @click="handleClick(index)"
-                >
+            <div :class="[
+                ns.e('item'),
+                ns.is('active', active === index)
+            ]" v-for="(label, index) in labels" :key="index" @click="handleClick(index)">
                 <span>{{ label }}</span>
             </div>
         </div>
@@ -27,7 +18,7 @@
 import { ref } from 'vue'
 
 import { useNamespace } from '@/utils/useNamespace'
-import  IconPanel  from '@/components/icons/IconPanel.vue'
+import IconPanel from '@/components/icons/IconPanel.vue'
 import { useRouter } from 'vue-router'
 
 const ns = useNamespace('sidebar')
@@ -38,7 +29,7 @@ const props = defineProps({
     labels: {
         type: Array<String>
     },
-    
+
 })
 const emits = defineEmits(['clickItem'])
 

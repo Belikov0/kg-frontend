@@ -2,8 +2,8 @@
     <div :class="[
         ns.b(),
         ns.is('login', showLogin)
-    ]">
-        <div :class="ns.e('content-wrapper')" id="start">
+    ]" id="start">
+        <div :class="ns.e('content-wrapper')">
             <div :class="[ns.e('title')]">
                 <span>{{ title }}</span>
             </div>
@@ -19,6 +19,9 @@
                 <el-form-item>
                     <el-button type="primary" round :size="buttonSize" @click='buttonClick'>开始航行</el-button>
                 </el-form-item>
+
+                
+
             </div>
         </div>
 
@@ -31,24 +34,24 @@
 
         <div :class="[
             ns.e('lessons'),
-            ns.e('content-wrapper')    
+            ns.e('content-wrapper')
         ]" id="lessons">
             课程
         </div>
 
 
-        
+
 
         <div :class="[ns.e('image-wrapper')]">
-        
+
         </div>
-        
+
     </div>
 </template>
 
 <script setup lang="ts">
 import { useNamespace } from '@/utils/useNamespace';
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 import LoginPanel from '@/components/Login/LoginPanel.vue'
 import { ref } from 'vue'
 

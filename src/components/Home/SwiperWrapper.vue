@@ -3,9 +3,18 @@
         <div :class="ns.e('item')">
             <KnowledgeGraph></KnowledgeGraph>
         </div>
-        <div class="inner b" :class="[ns.e('item')]"></div>
-        <div class="inner c" :class="[ns.e('item')]"></div>
-        <div class="inner d" :class="[ns.e('item')]"></div>
+        <div class="inner b" :class="[ns.e('item')]">
+            <!-- 此处插入组件 -->
+        </div>
+        <div class="inner c" :class="[ns.e('item')]">
+            <!-- 此处插入组件 -->
+        </div>
+        <div class="inner d" :class="[ns.e('item')]">
+            <!-- 此处插入组件 -->
+        </div>
+        <div class="inner e" :class="[ns.e('item')]">
+            <!-- 此处插入组件 -->
+        </div>
     </div>
 </template>
 
@@ -29,7 +38,7 @@ watch(() => props.offset, () => {
         transitionDuration: '500ms'
     }
 })
-// const offset = ref(0)
+
 
 
 const handleScroll = (e: WheelEvent) => {
@@ -54,7 +63,7 @@ const handleScroll = (e: WheelEvent) => {
 }
 
 .a {
-    background-color: aliceblue;
+
 
     display: flex;
     justify-content: center;
