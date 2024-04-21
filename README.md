@@ -1,6 +1,6 @@
 ## 主要功能区
 
-主要功能区在组件`SwipperWrapper`中，
+功能分区在组件`\src\components\Home\SwipperWrapper.vue`中，
 
 ## `Swipper`页面的格式
 
