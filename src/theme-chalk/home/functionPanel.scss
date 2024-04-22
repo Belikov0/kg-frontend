@@ -1,20 +1,15 @@
 @use '../mixins/mixins.scss' as *;
 
-
 $button-size: 60px;
 
-
-@include b(function-panel){
+@include b(function-panel) {
     width: inherit;
     height: inherit;
-
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-    
-    
-
+    align-items: center;
 
     @include e(button-wrapper) {
         margin: 0 auto;
@@ -23,20 +18,17 @@ $button-size: 60px;
         justify-content: center;
 
         box-sizing: border-box;
-        
     }
 
     @include e(function-button) {
         width: $button-size;
         height: $button-size;
         box-sizing: border-box;
-        
+
         padding: 10px;
 
         color: $color-main;
         background-color: white;
-
-        
 
         border: 2px solid rgb(213, 213, 213);
         &:first-child {
@@ -49,44 +41,76 @@ $button-size: 60px;
             border-left: none;
         }
 
-
-        transition: .4s;
+        transition: 0.4s;
         &:hover {
             background-color: $color-main;
-            color:white;
+            color: white;
             cursor: pointer;
-            width:calc($button-size + 10px);
+            width: calc($button-size + 10px);
             height: calc($button-size + 10px);
 
-            transition: .4s;
+            transition: 0.4s;
         }
 
         &:active {
             background-color: $color-main-active;
             color: white;
-            width:calc($button-size + 10px);
+            width: calc($button-size + 10px);
             height: calc($button-size + 10px);
         }
 
-        @include when(active){
+        @include when(active) {
             background-color: $color-main;
-            color:white;
-            width:calc($button-size + 10px);
+            color: white;
+            width: calc($button-size + 10px);
             height: calc($button-size + 10px);
-            transition: .4s;
+            transition: 0.4s;
         }
-
     }
 
-    @include e(panel-item){
-            flex-grow: 1;
-            padding: 20px;
-        
-            font-size: 30px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    @include e(panel-item) {
+        // flex-grow: 1;
+        padding: 20px;
+
+        // font-size: 15px;
+        // font-weight: bold;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
     }
 
+    @include e(function-wrapper) {
+        margin-top: 10px;
+        width: 80%;
+        height: 80%;
+        background-color: $color-main;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+        overflow: scroll;
+    }
+}
+
+@include b(courses) {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: large;
+
+    overflow-y: scroll;
+
+    @include e(selection-item) {
+        width: 100%;
+        height: 24px;
+        background-color: $color-main-active;
+        margin-bottom: 5px;
+
+        cursor: pointer;
+    }
 }

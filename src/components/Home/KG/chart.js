@@ -2,9 +2,9 @@ import tinycolor from 'tinycolor2'
 import * as d3 from 'd3'
 const radius = {
     课程: 50,
-    章节: 40,
-    节: 30,
-    小节: 25
+    章节: 25,
+    节: 15,
+    小节: 10
 }
 
 // 颜色
@@ -48,7 +48,7 @@ const onClickNode = (e, links, actives, activeCenter) => {
             return d ? actives.includes(d.id) : false
         })
         .transition(t)
-        .attr('fill', (d3) => colors[d3.labels])
+        .attr('fill', (d3) => colors[d3.label])
 
     actives.splice(0)
     activeCenter.splice(0)
@@ -77,10 +77,10 @@ const onClickNode = (e, links, actives, activeCenter) => {
         })
         .transition(t)
         .attr('fill', (d) => {
-            return highlight(colors[d.labels])
+            return highlight(colors[d.label])
         })
 
-    d3.select(e.currentTarget).attr('fill', (d) => highlight(colors[d.labels], 50))
+    d3.select(e.currentTarget).attr('fill', (d) => highlight(colors[d.label], 50))
 
     actives.push(...subs)
 }
@@ -96,7 +96,6 @@ const createChart = (data) => {
     // so that re-evaluating this cell produces the same result.
     const nodes = data.nodes.map((d, i) => ({ ...d, index: i }))
     const links = data.links.map((d, i) => ({ ...d, index: i }))
-    console.log(nodes, links)
 
     // Create a simulation with several forces.
     const simulation = d3
@@ -106,13 +105,14 @@ const createChart = (data) => {
             d3
                 .forceLink(links)
                 .id((d) => d.id)
-                .distance(200)
+                .distance(300)
         )
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX())
         .force('y', d3.forceY())
         .force('collide', d3.forceCollide(60).iterations(10))
         .force('charge', d3.forceManyBody().strength(-200))
+
     // Create the SVG container.
     const svg = d3
         .select('#kg-svg')
@@ -125,12 +125,12 @@ const createChart = (data) => {
     const link = svg
         .append('g')
         .attr('stroke', '#000')
-        .attr('stroke-opacity', 0.9)
+        .attr('stroke-opacity', 0.4)
         .selectAll('line')
         .data(links)
         .join('line')
-        .attr('stroke-width', () => Math.sqrt(30))
-        .text((d) => d.labels)
+        .attr('stroke-width', () => Math.sqrt(2))
+        .text((d) => d.label)
 
     const g = svg.append('g')
 
@@ -140,15 +140,15 @@ const createChart = (data) => {
         .selectAll('circle')
         .data(nodes)
         .join('circle')
-        .attr('r', (d) => radius[d.labels])
-        .attr('fill', (d) => colors[d.labels])
+        .attr('r', (d) => radius[d.label])
+        .attr('fill', (d) => colors[d.label])
         .attr('identity', (d) => d.id)
         // .attr('id')
         .on('click', (e) => {
             onClickNode(e, links, actives, activeCenter)
         }) // 点击事件
 
-    node.append('title').text((d) => d.prop.name)
+    node.append('title').text((d) => d.properties.name)
 
     // Add a drag behavior.
     node.call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended))
@@ -162,9 +162,9 @@ const createChart = (data) => {
         .attr('text-anchor', 'middle')
         .style('pointer-events', 'none')
         .text(function (d) {
-            return d.prop.name
+            return d.properties.name
         })
-        .attr('fill', (d) => colors[d.labels])
+        .attr('fill', (d) => colors[d.label])
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     simulation.on('tick', () => {
@@ -210,7 +210,10 @@ const createChart = (data) => {
 
     svg.call(zoom)
 
-    return svg.node()
+    return {
+        nodes: svg.node(),
+        simulation: simulation
+    }
 }
 
 export default createChart

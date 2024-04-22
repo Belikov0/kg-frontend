@@ -9,19 +9,23 @@
             </button>
         </div>
 
-        <component :class="ns.e('panel-item')" v-for="(tag, index) in panelList" :is="tag" :key="index"
-            v-show="active === index"></component>
+        <div :class="[ns.e('function-wrapper')]">
+            <component :class="ns.e('panel-item')" v-for="(tag, index) in panelList" :is="tag" :key="index"
+                v-show="active === index"></component>
+        </div>
 
     </div>
 </template>
 
 <script setup lang="ts">
-import { useNamespace } from '@/utils/useNamespace';
-import { ref } from 'vue'
+
 import { DocumentsOutline, MailOpenOutline, BuildOutline } from '@vicons/ionicons5';
 import Details from './Details.vue';
-import Lessons from './Lessons.vue';
+import Courses from './Courses.vue';
 import Operations from './Operations.vue';
+
+import { useNamespace } from '@/utils/useNamespace';
+import { ref } from 'vue'
 
 
 const ns = useNamespace('function-panel')
@@ -35,7 +39,7 @@ const handleClick = (index: number) => {
 }
 
 // panels
-const panelList = [Lessons, Details, Operations]
+const panelList = [Courses, Details, Operations]
 
 </script>
 

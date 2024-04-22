@@ -17,12 +17,15 @@ import FunctionPanel from './FunctionPanel/FunctionPanel.vue';
 import nodes from '@/assets/data/nodes.json'
 import links from '@/assets/data/relationship.json'
 
-
-import { onMounted } from 'vue';
+import * as d3 from 'd3'
+import { onBeforeMount, onMounted, provide, ref } from 'vue';
 import { useNamespace } from '@/utils/useNamespace';
 import createChart from './chart'
+import { getCourses, getData } from '@/utils/apis';
+import type { Link, Node } from './node';
 
 import axios from 'axios'
+import { create } from 'node_modules/axios/index.cjs';
 
 const props = defineProps({
     width: {
@@ -33,44 +36,47 @@ const props = defineProps({
     }
 })
 
-let nodeList = nodes.map(a => {
-    const b = {
-        id: '',
-        labels: '',
-        prop: {
-            name: '',
-            description: '',
-        }
-    }
-    b.id = '' + (a.id)
-    b.labels = a.labels
-    b.prop.name = a.prop.name
-    b.prop.description = a.prop.description
-    return b
-})
-
-let linkList = links.map(a => {
-    const b = {
-        start: '',
-        end: '',
-        type: ''
-    }
-    b.start = '' + (a.start)
-    b.end = '' + (a.end)
-    b.type = a.type
-    return b
-})
 
 
 
 const ns = useNamespace('graph')
 
-onMounted(() => {
-    createChart({
-        nodes: nodeList,
-        links: linkList
+
+
+const courses = ref({})
+const sim = ref({})
+
+provide('courses', courses)
+onBeforeMount(async () => {
+    courses.value = (await getCourses()).nodes.map((node: Node) => {
+        return {
+            id: node.id,
+            name: node.properties.name
+        }
     })
+
 })
+
+onMounted(async () => {
+
+    const data = await getData('1')
+
+
+    sim.value = createChart(data).simulation
+})
+
+const handleClickCourse = async (id: string) => {
+    const data = await getData(id)
+
+    const svg = d3.select('#kg-svg')
+    svg.selectAll('*').remove()
+    sim.value!.stop()
+
+    sim.value = createChart(data).simulation
+}
+
+provide('clickCourse', handleClickCourse)
+
 
 
 

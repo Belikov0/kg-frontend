@@ -3,15 +3,15 @@ import type { ExtractPropTypes } from 'vue'
 export interface Node {
     id: string
     labels: string | string[]
-    prop: {
+    properties: {
         name: string
         description: string
     }
 }
 
 export interface Link {
-    start: string
-    end: string
+    source: string
+    target: string
     type: string
 }
 

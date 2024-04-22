@@ -20,8 +20,7 @@
     @include e(panel-wrapper) {
         width: 300px;
         height: 600px;
-        background-color: white;
-        opacity: .5;
+        background-color: rgba(255, 255, 255, 0.6);
 
         position: absolute;
         right: 50px;
