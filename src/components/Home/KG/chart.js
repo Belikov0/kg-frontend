@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import * as d3 from 'd3'
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const radius = {
     课程: 50,
@@ -17,7 +17,6 @@ const colors = {
     小节: '#f8ad19'
 }
 
-
 const highlight = (color, percentage) => {
     if (!percentage) {
         percentage = 20
@@ -27,11 +26,6 @@ const highlight = (color, percentage) => {
 
     return brighterColor.toHexString()
 }
-
-
-
-
-
 
 export const currentActiveNode = ref(null)
 
@@ -58,7 +52,7 @@ const onClickNode = (e, links, actives, activeCenter) => {
     // 搜索现结点的相邻结点
     const subs = links
         .filter((item) => {
-            return item.source.id == '' + id || item.target.id == '' + id
+            return item.source.id == id || item.target.id == id
         })
         .map((item) => {
             if (item.source.id === id) {
@@ -84,8 +78,7 @@ const onClickNode = (e, links, actives, activeCenter) => {
 
     actives.push(...subs)
 
-
-    return activeCenter[0]
+    // return activeCenter[0]
 }
 
 const createChart = (data) => {
@@ -108,7 +101,7 @@ const createChart = (data) => {
             d3
                 .forceLink(links)
                 .id((d) => d.id)
-                .distance(300)
+                .distance(30)
         )
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX())
@@ -148,9 +141,8 @@ const createChart = (data) => {
         .attr('identity', (d) => d.id)
         // .attr('id')
         .on('click', (e) => {
-            currentActiveNode.value = onClickNode(e, links, actives, activeCenter)[0]
-            console.log(currentActiveNode.value)
-
+            currentActiveNode.value = d3.select(e.currentTarget).attr('identity')
+            onClickNode(e, links, actives, activeCenter)
         }) // 点击事件
 
     node.append('title').text((d) => d.properties.name)

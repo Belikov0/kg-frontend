@@ -22,7 +22,7 @@ import { onBeforeMount, onMounted, provide, ref, computed, watch } from 'vue';
 import { useNamespace } from '@/utils/useNamespace';
 import createChart from './chart'
 import { currentActiveNode } from './chart'
-import { getCourses, getData } from '@/utils/apis';
+import { getCourses, getData, getDataByArbitraryId } from '@/utils/apis';
 import type { Link, Node } from './node';
 
 import axios from 'axios'
@@ -48,50 +48,56 @@ const sim = ref({})
 
 provide('courses', courses)
 onBeforeMount(async () => {
-    // courses.value = (await getCourses()).nodes.map((node: Node) => {
-    //     return {
-    //         id: node.id,
-    //         name: node.properties.name
-    //     }
-    // })
+    courses.value = (await getCourses()).nodes.map((node: Node) => {
+        return {
+            id: node.id,
+            name: node.properties.name
+        }
+    })
 })
-const data = ref({nodes, links})
+const data = ref(null)
 onMounted(async () => {
-
-    // const data = await getData('1')
-
-
+    data.value = await getData('1')
     sim.value = createChart(data.value).simulation
 })
 
 
 const handleClickCourse = async (id: string) => {
-    const data = await getData(id)
-
+    data.value = await getData(id)
     const svg = d3.select('#kg-svg')
     svg.selectAll('*').remove()
     sim.value!.stop()
 
-    sim.value = createChart(data).simulation
+    sim.value = createChart(data.value).simulation
 }
 
 // const currentShowNode = ref(null)
 
 const currentShowNode = computed(() => {
-    return nodes.find(item => item.id === currentActiveNode.value)
+    if (data) {
+        return data.value?.nodes.find(item => item.id === currentActiveNode.value)
+    }
+    else {
+        return null
+    }
+
+
 })
 
 const handleClickReset = () => {
 }
 
 
+const handleClickSetRoot = async () => {
+    data.value = await getDataByArbitraryId(currentActiveNode.value)
 
+    console.log(currentActiveNode, data.value)
+    const svg = d3.select('#kg-svg')
+    svg.selectAll('*').remove()
+    sim.value!.stop()
 
-const handleClickSetRoot = () => {
-    const root = currentActiveNode.value
-    data.value.links = nodes.map(node => {
-        
-    })
+    sim.value = createChart(data.value).simulation
+
 }
 
 const dataToTree = () => {
@@ -103,13 +109,6 @@ const treeToData = () => {
 }
 
 
-// watch(() => currentActiveNode, ()=>{
-//     console.log(currentActiveNode.value)
-//     currentShowNode.value = nodes.find(item => item.id === currentActiveNode)
-// })
-watch(() => data, () => {
-    sim.value = createChart(data.value).simulation
-})
 
 provide('clickCourse', handleClickCourse)
 provide('cur', currentShowNode)
