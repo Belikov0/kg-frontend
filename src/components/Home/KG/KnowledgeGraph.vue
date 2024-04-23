@@ -18,14 +18,14 @@ import nodes from '@/assets/data/nodes.json'
 import links from '@/assets/data/relationship.json'
 
 import * as d3 from 'd3'
-import { onBeforeMount, onMounted, provide, ref } from 'vue';
+import { onBeforeMount, onMounted, provide, ref, computed, watch } from 'vue';
 import { useNamespace } from '@/utils/useNamespace';
 import createChart from './chart'
+import { currentActiveNode } from './chart'
 import { getCourses, getData } from '@/utils/apis';
 import type { Link, Node } from './node';
 
 import axios from 'axios'
-import { create } from 'node_modules/axios/index.cjs';
 
 const props = defineProps({
     width: {
@@ -48,22 +48,22 @@ const sim = ref({})
 
 provide('courses', courses)
 onBeforeMount(async () => {
-    courses.value = (await getCourses()).nodes.map((node: Node) => {
-        return {
-            id: node.id,
-            name: node.properties.name
-        }
-    })
-
+    // courses.value = (await getCourses()).nodes.map((node: Node) => {
+    //     return {
+    //         id: node.id,
+    //         name: node.properties.name
+    //     }
+    // })
 })
-
+const data = ref({nodes, links})
 onMounted(async () => {
 
-    const data = await getData('1')
+    // const data = await getData('1')
 
 
-    sim.value = createChart(data).simulation
+    sim.value = createChart(data.value).simulation
 })
+
 
 const handleClickCourse = async (id: string) => {
     const data = await getData(id)
@@ -75,7 +75,51 @@ const handleClickCourse = async (id: string) => {
     sim.value = createChart(data).simulation
 }
 
+// const currentShowNode = ref(null)
+
+const currentShowNode = computed(() => {
+    return nodes.find(item => item.id === currentActiveNode.value)
+})
+
+const handleClickReset = () => {
+}
+
+
+
+
+const handleClickSetRoot = () => {
+    const root = currentActiveNode.value
+    data.value.links = nodes.map(node => {
+        
+    })
+}
+
+const dataToTree = () => {
+
+}
+
+const treeToData = () => {
+
+}
+
+
+// watch(() => currentActiveNode, ()=>{
+//     console.log(currentActiveNode.value)
+//     currentShowNode.value = nodes.find(item => item.id === currentActiveNode)
+// })
+watch(() => data, () => {
+    sim.value = createChart(data.value).simulation
+})
+
 provide('clickCourse', handleClickCourse)
+provide('cur', currentShowNode)
+
+provide('reset', handleClickReset)
+provide('setRoot', handleClickSetRoot)
+
+
+
+
 
 
 

@@ -1,0 +1,27 @@
+@use './mixins/mixins.scss' as *;
+
+@include b(button) {
+    width: 120px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+
+    background-color: $color-sub;
+    border: 2px solid $color-sub;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: $color-main-active;
+        cursor: pointer;
+    }
+
+
+    margin: 5px 10px;
+
+}

@@ -1,5 +1,7 @@
 import tinycolor from 'tinycolor2'
 import * as d3 from 'd3'
+import {ref} from 'vue'
+
 const radius = {
     课程: 50,
     章节: 25,
@@ -15,9 +17,6 @@ const colors = {
     小节: '#f8ad19'
 }
 
-/**
- *
- */
 
 const highlight = (color, percentage) => {
     if (!percentage) {
@@ -29,12 +28,13 @@ const highlight = (color, percentage) => {
     return brighterColor.toHexString()
 }
 
-/**
- *
- * @param e : 事件对象
- * @param links ：所有的连接
- * @param actives ：活动对象
- */
+
+
+
+
+
+export const currentActiveNode = ref(null)
+
 const onClickNode = (e, links, actives, activeCenter) => {
     const t = d3.transition().duration(500).ease(d3.easeLinear)
 
@@ -83,6 +83,9 @@ const onClickNode = (e, links, actives, activeCenter) => {
     d3.select(e.currentTarget).attr('fill', (d) => highlight(colors[d.label], 50))
 
     actives.push(...subs)
+
+
+    return activeCenter[0]
 }
 
 const createChart = (data) => {
@@ -145,7 +148,9 @@ const createChart = (data) => {
         .attr('identity', (d) => d.id)
         // .attr('id')
         .on('click', (e) => {
-            onClickNode(e, links, actives, activeCenter)
+            currentActiveNode.value = onClickNode(e, links, actives, activeCenter)[0]
+            console.log(currentActiveNode.value)
+
         }) // 点击事件
 
     node.append('title').text((d) => d.properties.name)

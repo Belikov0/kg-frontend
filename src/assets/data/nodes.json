@@ -1,200 +1,200 @@
 [
     {
-        "id": 0,
-        "labels": "课程",
-        "prop": {
+        "id": "0",
+        "label": "课程",
+        "properties": {
             "name": "J2EE 架构程序设计",
             "description": "一"
         }
     },
     {
-        "id": 1,
-        "labels": "课程",
-        "prop": {
+        "id": "1",
+        "label": "课程",
+        "properties": {
             "name": "Java 技术及应用",
             "description": "二"
         }
     },
     {
-        "id": 2,
-        "labels": "章节",
-        "prop": {
+        "id": "2",
+        "label": "章节",
+        "properties": {
             "name": "Java基础",
             "description": "介绍Java编程语言的基本概念、语法和特性。"
         }
     },
     {
-        "id": 3,
-        "labels": "章节",
-        "prop": {
+        "id": "3",
+        "label": "章节",
+        "properties": {
             "name": "JDBC",
             "description": "数据库连接。"
         }
     },
     {
-        "id": 4,
-        "labels": "章节",
-        "prop": {
+        "id": "4",
+        "label": "章节",
+        "properties": {
             "name": "Servlet",
             "description": "是一种用于处理Web请求和响应的Java程序。它运行在Web服务器上，并根据请求的URL和参数来生成动态内容。Servlet可以处理各种类型的请求，如GET、POST等，并可以与数据库进行交互以获取或存储数据。它是Java EE（Enterprise Edition）的一部分，提供了强大的功能和灵活性，用于构建可扩展的Web应用程序。"
         }
     },
     {
-        "id": 5,
-        "labels": "章节",
-        "prop": {
+        "id": "5",
+        "label": "章节",
+        "properties": {
             "name": "Web服务",
             "description": "Web服务是一种基于互联网的技术，用于实现不同系统之间的通信和数据交换。它允许不同的应用程序通过HTTP协议进行通信，并使用XML或JSON等格式进行数据传输。Web服务提供了一种标准化的方式，使得不同平台和编程语言的应用程序能够相互交互和共享数据。通过Web服务，开发人员可以轻松地实现跨平台的数据共享和集成，提高系统的灵活性和可扩展性。"
         }
     },
     {
-        "id": 6,
-        "labels": "章节",
-        "prop": {
+        "id": "6",
+        "label": "章节",
+        "properties": {
             "name": "数据库操作",
             "description": "介绍了如何对数据库进行操作，包括数据的增加、删除、修改和查询。"
         }
     },
     {
-        "id": 7,
-        "labels": "章节",
-        "prop": {
+        "id": "7",
+        "label": "章节",
+        "properties": {
             "name": "网络编程",
             "description": "讲述利用计算机网络进行数据传输和通信的技术和方法。"
         }
     },
     {
-        "id": 8,
-        "labels": "章节",
-        "prop": {
+        "id": "8",
+        "label": "章节",
+        "properties": {
             "name": "面向对象",
             "description": "面向对象是一种编程范式，它将程序中的数据和对数据的操作封装在一起，形成对象。对象具有属性和方法，可以通过调用方法来操作对象的属性。面向对象编程的核心思想是将现实世界中的事物抽象为对象，通过对象之间的交互来完成程序的功能。面向对象的特点包括封装、继承和多态。封装指的是将数据和对数据的操作封装在一起，保证数据的安全性和完整性；继承指的是通过定义一个基类，可以派生出多个子类，子类可以继承基类的属性和方法；多态指的是同一个方法可以根据不同的对象调用出不同的行为。面向对象编程可以提高代码的可重用性、可维护性和可扩展性，使程序的结构更加清晰和易于理解。"
         }
     },
     {
-        "id": 9,
-        "labels": "章节",
-        "prop": {
+        "id": "9",
+        "label": "章节",
+        "properties": {
             "name": "框架应用",
             "description": "指的是使用简洁的词汇框架应用的过程或结果。"
         }
     },
     {
-        "id": 10,
-        "labels": "节",
-        "prop": {
+        "id": "10",
+        "label": "节",
+        "properties": {
             "name": "一",
             "description": "一"
         }
     },
     {
-        "id": 11,
-        "labels": "节",
-        "prop": {
+        "id": "11",
+        "label": "节",
+        "properties": {
             "name": "二",
             "description": "二"
         }
     },
     {
-        "id": 12,
-        "labels": "节",
-        "prop": {
+        "id": "12",
+        "label": "节",
+        "properties": {
             "name": "三",
             "description": "三"
         }
     },
     {
-        "id": 13,
-        "labels": "节",
-        "prop": {
+        "id": "13",
+        "label": "节",
+        "properties": {
             "name": "四",
             "description": "四"
         }
     },
     {
-        "id": 14,
-        "labels": "节",
-        "prop": {
+        "id": "14",
+        "label": "节",
+        "properties": {
             "name": "五",
             "description": "五"
         }
     },
     {
-        "id": 15,
-        "labels": "节",
-        "prop": {
+        "id": "15",
+        "label": "节",
+        "properties": {
             "name": "六",
             "description": "六"
         }
     },
     {
-        "id": 16,
-        "labels": "节",
-        "prop": {
+        "id":"16",
+        "label": "节",
+        "properties": {
             "name": "日",
             "description": "日"
         }
     },
     {
-        "id": 17,
-        "labels": "节",
-        "prop": {
+        "id": "17",
+        "label": "节",
+        "properties": {
             "name": "一一",
             "description": "一一"
         }
     },
     {
-        "id": 18,
-        "labels": "小节",
-        "prop": {
+        "id": "18",
+        "label": "小节",
+        "properties": {
             "name": "一二",
             "description": "一二"
         }
     },
     {
-        "id": 19,
-        "labels": "小节",
-        "prop": {
+        "id": "19",
+        "label": "小节",
+        "properties": {
             "name": "一三",
             "description": "一三"
         }
     },
     {
-        "id": 20,
-        "labels": "小节",
-        "prop": {
+        "id": "20",
+        "label": "小节",
+        "properties": {
             "name": "一四",
             "description": "一四"
         }
     },
     {
-        "id": 21,
-        "labels": "小节",
-        "prop": {
+        "id": "21",
+        "label": "小节",
+        "properties": {
             "name": "一五",
             "description": "一五"
         }
     },
     {
-        "id": 22,
-        "labels": "小节",
-        "prop": {
+        "id": "22",
+        "label": "小节",
+        "properties": {
             "name": "一六",
             "description": "一六"
         }
     },
     {
-        "id": 23,
-        "labels": "小节",
-        "prop": {
+        "id": "23",
+        "label": "小节",
+        "properties": {
             "name": "一七",
             "description": "一七"
         }
     },
     {
-        "id": 24,
-        "labels": "小节",
-        "prop": {
+        "id": "24",
+        "label": "小节",
+        "properties": {
             "name": "一八",
             "description": "一八"
         }

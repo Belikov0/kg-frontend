@@ -11,7 +11,8 @@
 
         <div :class="[ns.e('function-wrapper')]">
             <component :class="ns.e('panel-item')" v-for="(tag, index) in panelList" :is="tag" :key="index"
-                v-show="active === index"></component>
+                v-show="active === index">
+            </component>
         </div>
 
     </div>
