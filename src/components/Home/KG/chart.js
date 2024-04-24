@@ -83,8 +83,8 @@ const onClickNode = (e, links, actives, activeCenter) => {
 
 const createChart = (data) => {
     // Specify the dimensions of the chart.
-    const width = 1600
-    const height = 1000
+    const width = 2000
+    const height = 1500
     let actives = []
     let activeCenter = []
 
@@ -106,8 +106,8 @@ const createChart = (data) => {
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX())
         .force('y', d3.forceY())
-        .force('collide', d3.forceCollide(60).iterations(10))
-        .force('charge', d3.forceManyBody().strength(-200))
+        .force('collide', d3.forceCollide(40).iterations(10))
+        .force('charge', d3.forceManyBody().strength(-50))
 
     // Create the SVG container.
     const svg = d3
@@ -150,18 +150,16 @@ const createChart = (data) => {
     // Add a drag behavior.
     node.call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended))
 
-    const nodeText = g
-        .append('g')
+    const nodeText = svg
+        // .append('g')
         .selectAll('text')
         .data(nodes)
         .join('text')
         .attr('dy', '.3em')
         .attr('text-anchor', 'middle')
         .style('pointer-events', 'none')
-        .text(function (d) {
-            return d.properties.name
-        })
-        .attr('fill', (d) => colors[d.label])
+        .text((d) => d.properties.name)
+        .attr('fill', (d) => 'red')
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     simulation.on('tick', () => {

@@ -2,7 +2,7 @@ import type { ExtractPropTypes } from 'vue'
 
 export interface Node {
     id: string
-    labels: string | string[]
+    label: string
     properties: {
         name: string
         description: string
