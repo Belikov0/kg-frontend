@@ -3,31 +3,41 @@ import * as d3 from 'd3'
 import { ref } from 'vue'
 
 const radius = {
-    课程: 50,
+    课程: 40,
     章节: 25,
     节: 15,
     小节: 10
 }
 
+const length = {
+    课程: 300,
+    章节: 100,
+    节: 25,
+    小节: 5
+}
+
 // 颜色
 const colors = {
-    课程: '#902921',
-    章节: '#294853',
-    节: '#837451',
-    小节: '#f8ad19'
+    课程: '#8D5A97',
+    章节: '#907F9F',
+    节: '#A4A5AE',
+    小节: '#B0C7BD'
 }
 
 const highlight = (color, percentage) => {
     if (!percentage) {
-        percentage = 20
+        percentage = 50
     }
-    const originColor = tinycolor(color)
-    const brighterColor = originColor.brighten(percentage)
+    // const originColor = tinycolor(color)
+    const originColor = tinycolor.fromRatio(color)
+    const brighterColor = originColor
+                            .brighten(percentage)
+                            .saturate(percentage)
 
     return brighterColor.toHexString()
 }
 
-export const currentActiveNode = ref(null)
+export const currentActiveNode = ref('1')
 
 const onClickNode = (e, links, actives, activeCenter) => {
     const t = d3.transition().duration(500).ease(d3.easeLinear)
@@ -36,6 +46,7 @@ const onClickNode = (e, links, actives, activeCenter) => {
     if (activeCenter.includes(d3.select(e.currentTarget).attr('identity'))) {
         return
     }
+
     // 颜色复原
     d3.selectAll('circle')
         .filter((d) => {
@@ -71,14 +82,16 @@ const onClickNode = (e, links, actives, activeCenter) => {
         })
         .transition(t)
         .attr('fill', (d) => {
+            // return  'white'
             return highlight(colors[d.label])
         })
 
-    d3.select(e.currentTarget).attr('fill', (d) => highlight(colors[d.label], 50))
+    d3.select(e.currentTarget).attr('fill', (d) => {
+        // return 'white' //debug
+        return highlight(colors[d.label], 100)
+    })
 
     actives.push(...subs)
-
-    // return activeCenter[0]
 }
 
 const createChart = (data) => {
@@ -101,13 +114,18 @@ const createChart = (data) => {
             d3
                 .forceLink(links)
                 .id((d) => d.id)
-                .distance(30)
+                .distance((d) => length[d.source.label])
         )
         .force('charge', d3.forceManyBody())
         .force('x', d3.forceX())
         .force('y', d3.forceY())
-        .force('collide', d3.forceCollide(40).iterations(10))
-        .force('charge', d3.forceManyBody().strength(-50))
+        .force('collide', d3.forceCollide(50).iterations(5))
+        .force('charge', d3.forceManyBody().strength(-200))
+
+    // forceCollide
+    // iterations
+    // forceManyBody
+    // strength
 
     // Create the SVG container.
     const svg = d3
@@ -120,12 +138,12 @@ const createChart = (data) => {
     // Add a line for each link, and a circle for each node.
     const link = svg
         .append('g')
-        .attr('stroke', '#000')
+        .attr('stroke', '#333')
         .attr('stroke-opacity', 0.4)
         .selectAll('line')
         .data(links)
         .join('line')
-        .attr('stroke-width', () => Math.sqrt(2))
+        .attr('stroke-width', (d) => Math.sqrt(2))
         .text((d) => d.label)
 
     const g = svg.append('g')
@@ -151,7 +169,7 @@ const createChart = (data) => {
     node.call(d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended))
 
     const nodeText = svg
-        // .append('g')
+        .append('g')
         .selectAll('text')
         .data(nodes)
         .join('text')
@@ -159,7 +177,10 @@ const createChart = (data) => {
         .attr('text-anchor', 'middle')
         .style('pointer-events', 'none')
         .text((d) => d.properties.name)
-        .attr('fill', (d) => 'red')
+        .attr('fill', (d) => '#333')
+
+    // 如果将nodeText全部挂载在svg可能出现性能问题
+    // 不挂载在svg有样式问题
 
     // Set the position attributes of links and nodes each time the simulation ticks.
     simulation.on('tick', () => {
@@ -198,7 +219,7 @@ const createChart = (data) => {
 
     const handleZoom = (e) => {
         const t = d3.transition().duration(500).ease(d3.easeLinear)
-        svg.transition(t).attr('transform', e.transform)
+        svg.selectAll('g').transition(t).attr('transform', e.transform)
     }
 
     let zoom = d3.zoom().scaleExtent([0.5, 5]).on('zoom', handleZoom)

@@ -5,16 +5,14 @@
         </div>
         <div class="inner b" :class="[ns.e('item')]">
             <!-- 此处插入组件 -->
+            <QASystem></QASystem>
         </div>
-        <div class="inner c" :class="[ns.e('item')]">
-            <!-- 此处插入组件 -->
-        </div>
+        
         <div class="inner d" :class="[ns.e('item')]">
             <!-- 此处插入组件 -->
+            <Recommend></Recommend>
         </div>
-        <div class="inner e" :class="[ns.e('item')]">
-            <!-- 此处插入组件 -->
-        </div>
+
     </div>
 </template>
 
@@ -23,6 +21,8 @@ import { useNamespace } from '@/utils/useNamespace';
 import { useSlots, ref, computed, watch } from 'vue'
 import throttle from '@/utils/throttle'
 import KnowledgeGraph from './KG/KnowledgeGraph.vue';
+import Recommend from './Recommend/Recommend.vue';
+import QASystem from './QASystem/QASystem.vue';
 
 const ns = useNamespace('swipper')
 
@@ -38,8 +38,6 @@ watch(() => props.offset, () => {
         transitionDuration: '500ms'
     }
 })
-
-
 
 const handleScroll = (e: WheelEvent) => {
     e.preventDefault()
@@ -72,14 +70,14 @@ const handleScroll = (e: WheelEvent) => {
 }
 
 .b {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
 }
 
 .c {
-    background-color: azure;
+    /* background-color: azure; */
 }
 
 .d {
-    background-color: beige;
+    /* background-color: beige; */
 }
 </style>

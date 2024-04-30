@@ -56,7 +56,7 @@ $item-active-bacc: $color-white;
 
         @include when(active) {
             color: $color-main;
-            background-color: $item-active-bacc;
+            background-color: $color-main-active;
             cursor: pointer;
             height: $item-height-hover;
             width: $item-active-width;

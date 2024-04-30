@@ -1,6 +1,5 @@
 <template>
     <div :class="[ns.b()]">
-
         <div id="KG" :class="ns.e('kg')">
             <svg id="kg-svg"></svg>
         </div>
@@ -18,7 +17,7 @@ import nodes from '@/assets/data/nodes.json'
 import links from '@/assets/data/relationship.json'
 
 import * as d3 from 'd3'
-import { onBeforeMount, onMounted, provide, ref, computed, watch } from 'vue';
+import { onBeforeMount, onMounted, provide, ref, computed, watch, inject } from 'vue';
 import { useNamespace } from '@/utils/useNamespace';
 
 import createChart from './chart'
@@ -36,40 +35,59 @@ const props = defineProps({
     }
 })
 
-
-
-
 const ns = useNamespace('graph')
 
+const i = inject('i')
 
+
+const currentCourse = ref('1')
+const data = ref<{ nodes: Array<Node>, links: Array<Link> }>({})
 
 const courses = ref({})
 const sim = ref({})
 
 provide('courses', courses)
 onBeforeMount(async () => {
-    // courses.value = (await getCourses()).nodes.map((node: Node) => {
-    //     return {
-    //         id: node.id,
-    //         name: node.properties.name
-    //     }
-    // })
+    courses.value = (await getCourses()).nodes.map((node: Node) => {
+        return {
+            id: node.id,
+            name: node.properties.name
+        }
+    })
 })
-const data = ref<{ nodes: Array<Node>, links: Array<Link> }>({})
-onMounted(async () => {
-    // data.value = await getData('1')
-    data.value = graph
+
+const stopSim = () => {
+    const svg = d3.select('#kg-svg')
+    svg.selectAll('*').remove()
+    sim.value?.stop()
+}
+
+const startSim = async () => {
+    data.value = await getDataByArbitraryId(currentActiveNode.value)
+    console.log(data.value)
     sim.value = createChart(data.value).simulation
+}
+
+watch(() => i, () => {
+    if (i !== 1) {
+        stopSim()
+    } else {
+        startSim()
+    }
+})
+
+
+
+onMounted(async () => {
+    startSim()
 })
 
 
 const handleClickCourse = async (id: string) => {
-    data.value = await getData(id)
-    const svg = d3.select('#kg-svg')
-    svg.selectAll('*').remove()
-    sim.value!.stop()
-
-    sim.value = createChart(data.value).simulation
+    currentCourse.value = id
+    currentActiveNode.value = id
+    stopSim()
+    startSim()
 }
 
 // const currentShowNode = ref(null)
@@ -83,29 +101,19 @@ const currentShowNode = computed(() => {
     }
 })
 
-const handleClickReset = () => {
+const handleClickReset = async () => {
+    currentActiveNode.value = currentCourse.value
+    stopSim()
+    startSim()
 }
 
 
 const handleClickSetRoot = async () => {
-    data.value = await getDataByArbitraryId(currentActiveNode.value)
-
-    console.log(currentActiveNode, data.value)
-    const svg = d3.select('#kg-svg')
-    svg.selectAll('*').remove()
-    sim.value!.stop()
-
-    sim.value = createChart(data.value).simulation
-
+    console.log(currentActiveNode.value)
+    stopSim()
+    startSim()
 }
 
-const dataToTree = () => {
-
-}
-
-const treeToData = () => {
-
-}
 
 
 

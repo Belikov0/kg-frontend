@@ -43,6 +43,9 @@ const active = ref(0)
 const handleClick = (index: number) => {
     active.value = index
     emits('clickItem', index)
+
+    
+
 }
 
 

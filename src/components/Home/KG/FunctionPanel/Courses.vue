@@ -1,5 +1,5 @@
 <template>
-    <div :class="ns.b()">
+    <div :class="ns.b()" @wheel="handleScroll">
         <div v-for="(item) in courses" :key="item.id" :class="ns.e('selection-item')"
             @click="handleClickCourse(item.id)">
             <span>{{ item.name }}</span>
@@ -27,6 +27,10 @@ const handleClickCourse = inject('clickCourse') as Function
 watch(() => courses, () => {
     console.log(courses)
 })
+
+const handleScroll = (e: WheelEvent) => {
+    e.stopPropagation()
+}
 
 </script>
 

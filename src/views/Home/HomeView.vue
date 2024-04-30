@@ -13,38 +13,13 @@
 
 import Sidebar from '@/components/Home/Sidebar.vue'
 import Nav from '@/components/Guide/Nav.vue';
-import { computed, ref } from 'vue'
+import { computed, ref, provide } from 'vue'
 import { useNamespace } from '@/utils/useNamespace';
 import SwiperWrapper from '@/components/Home/SwiperWrapper.vue';
 
 const ns = useNamespace('container')
 
-const labels = ref(['数据展示', '智能问答', '数据分析', '实战操练', '推荐系统'])
-// const items = [
-//     {
-//         msg: '开始',
-//         func: () => {
-//             router.push("#start")
-//         }
-//     },
-//     {
-//         msg: '关于我们',
-//         func: () => {
-//             router.push("#introduction")
-//         }
-//     },
-//     {
-//         msg: '课程',
-//         func: () => {
-//             router.push("#lessons")
-//         }
-//     },
-//     {
-//         msg: '登录',
-//         func: () => {}
-//     }
-// ]
-
+const labels = ref(['数据展示', '智能问答', '推荐系统'])
 
 
 const i = ref(0)
@@ -55,6 +30,10 @@ const offset = computed(() => {
 const handleClick = (index: number) => {
     i.value = index
 }
+
+provide('i', i)
+
+
 
 const handleScroll = (e: WheelEvent) => {
     e.preventDefault()

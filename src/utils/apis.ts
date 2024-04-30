@@ -1,15 +1,55 @@
 import axios from 'axios'
 
+// export const baseURL = 'http://10.151.145.53:5000'
+export const baseURL = 'http://39.105.221.59:5000'
+
 export const getCourses = async () => {
-    return await axios.get('http://10.151.208.102:5000/zhxh/courses').then((res) => res.data)
+    return await axios.get(baseURL + '/zhxh/courses').then((res) => res.data)
 }
 
 export const getData = async (id: string) => {
-    return await axios
-        .get(`http://10.151.208.102:5000/zhxh/course?id=${id}`)
-        .then((res) => res.data)
+    return await axios.get(baseURL + `/zhxh/course?id=${id}`).then((res) => res.data)
 }
 
 export const getDataByArbitraryId = async (id: string) => {
-    return await axios.get(`http://10.151.208.102:5000/zhxh/node?id=${id}`).then((res) => res.data)
+    return await axios.get(baseURL + `/zhxh/node?id=${id}`).then((res) => res.data)
+}
+
+interface PrecourseReq {
+    major: string
+    time: string
+    course: string
+}
+
+interface PathReq {
+    major: string
+    time: string
+    course: string
+    precourse: Array<String>
+}
+
+export const getPrecourse = async (precourseReq: PrecourseReq) => {
+    return await axios({
+        url: '/zhxh/precourse',
+        method: 'post',
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: precourseReq
+    }).then((res) => res.data)
+}
+
+export const getPath = async (pathReq: PathReq) => {
+    return await axios({
+        url: '/zhxh/path',
+        method: 'post',
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: pathReq
+    }).then((res) => res.data)
 }
