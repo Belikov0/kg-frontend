@@ -53,3 +53,20 @@ export const getPath = async (pathReq: PathReq) => {
         data: pathReq
     }).then((res) => res.data)
 }
+
+interface Text {
+    text: string
+}
+
+export const getAnswer = async (text: any) => {
+    return await axios({
+        url: '/zhxh/question',
+        method: 'post',
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: text
+    })
+}

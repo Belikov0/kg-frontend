@@ -41,7 +41,9 @@
         <div :class="ns.e('path')" v-if="!courseVisible">
             <div :class="ns.e('path-header')">
                 <span>根据您的学期情况，推荐学习路径为：
-                    高等数学→数据结构→数据挖掘
+                    <span v-for="(item, index) in pathCourse" :key="item">
+                        <span v-if="index !== 0">-></span>{{ item }}
+                    </span>
                 </span>
                 <span>为您规划的学习计划表：</span>
             </div>
@@ -69,6 +71,7 @@ import { useNamespace } from '@/utils/useNamespace';
 import { getPrecourse, getPath } from '@/utils/apis'
 import { ref, reactive } from 'vue'
 import axios from 'axios'
+import KnowledgeGraph from '../KG/KnowledgeGraph.vue';
 
 interface FormData {
     course: string
@@ -83,83 +86,63 @@ const formData = reactive({
 
 const courseVisible = ref(true)
 
-const precourse = ref(['高等数学', '线性代数', '数据结构', '算法设计与分析', '数据挖掘'])
+const precourse = ref([])
 const selectedCourses = ref([])
 
+const pathCourse = ref([])
+
 const handleClickGetPrecourse = async () => {
-    // const body = {
-    //     course: formData.course,
-    //     time: formData.time + '周',
-    //     major: formData.major
-    // }
-    // console.log("click get precourse", body)
-    // const resp = await getPrecourse(body)
-    // console.log(resp)
+    const body = {
+        course: formData.course,
+        time: formData.time + '周',
+        major: formData.major
+    }
+    console.log("click get precourse", body)
+    const resp = await getPrecourse(body)
+    console.log(resp)
     precourse.value = resp.precourse
+
+
+    precourse.value.knowledge = precourse.value.knowledge.map(item => {
+        return item.replace('<br>', '')
+    })
+
 }
 
 const path = ref([
-    {
-        time: '第一周',
-        course: '高等数学',
-        knowledge: '极限与连续，导数与微分'
-    }, {
-        time: '第二周',
-        course: '高等数学',
-        knowledge: '不定积分与定义积分'
-    }, {
-        time: '第三周',
-        course: '高等数学',
-        knowledge: '多元微分，多元积分'
-    }, {
-        time: '第四周',
-        course: '高等数学',
-        knowledge: '多重积分'
-    }, {
-        time: '第五周',
-        course: '数据结构',
-        knowledge: '线性表，栈，队列'
-    }, {
-        time: '第六周',
-        course: '数据结构',
-        knowledge: '树，图'
-    }, {
-        time: '第七周',
-        course: '数据结构',
-        knowledge: '排序和查找，'
-    }, {
-        time: '第八周',
-        course: '数据挖掘',
-        knowledge: '数据挖掘绪论，线性回归'
-    },
+
 
 ])
 const pre = []
 
 const handleClickGetPath = async () => {
-    // const pre: Array<String> = []
-    // path.value = []
-    // pre.push(...selectedCourses.value)
-    // const body = {
-    //     course: formData.course,
-    //     time: formData.time + '周',
-    //     major: formData.major,
-    //     precourse: pre
-    // }
-    // console.log("click get path", body)
-    // const raw = await getPath(body)
-    // console.log(raw)
+    const pre: Array<String> = []
+    path.value = []
+    pre.push(...selectedCourses.value)
+    const body = {
+        course: formData.course,
+        time: formData.time + '周',
+        major: formData.major,
+        precourse: pre
+    }
+    console.log("click get path", body)
+    const raw = await getPath(body)
+    console.log(raw)
+    pathCourse.value = raw.course.filter((item, index, array) => {
+        return array.indexOf(item) === index
+    })
 
-    // const len = raw.time.length
 
-    // for (let i = 0; i < len; i++) {
-    //     path.value.push({})
-    //     path.value[i].time = raw.time[i]
-    //     path.value[i].course = raw.course[i]
-    //     path.value[i].knowledge = raw.knowledge[i]
-    // }
+    const len = raw.time.length
 
-    // console.log(path.value)
+    for (let i = 0; i < len; i++) {
+        path.value.push({})
+        path.value[i].time = raw.time[i]
+        path.value[i].course = raw.course[i]
+        path.value[i].knowledge = raw.knowledge[i]
+    }
+
+    console.log(path.value)
 
     courseVisible.value = false
 }
@@ -173,9 +156,13 @@ const ns = useNamespace('recommend')
 @use '@style/mixins/mixins.scss' as *;
 
 @include b(recommend) {
-    width: 1200px;
-    height: 1000px;
+    width: 1400px;
+    height: 900px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 30px;
 
+    background-color: rgb(228, 228, 228);
     margin-top: 200px;
 
 
@@ -305,7 +292,7 @@ const ns = useNamespace('recommend')
 
 
 .el-table__inner-wrapper {
-    
+
     th,
     td {
         height: 60px;

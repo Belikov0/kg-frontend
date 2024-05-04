@@ -1,10 +1,9 @@
 @use '../mixins/mixins.scss' as *;
 
 @include b(main) {
-    // width: auto;    
+    // width: auto;
     height: 600px;
     padding-top: 75px;
-
 
     @include e(content-wrapper) {
         width: $content-width;
@@ -77,27 +76,30 @@
 
         width: 100%;
         height: 800px;
-        // background-image: url('@/assets/pics/ship2.png');
+        background-image: url('@/assets/pics/ship2.png');
         background-size: cover;
     }
 
-
-    @include e(introduction){
-
-        background-color: antiquewhite;
+    @include e(kg) {
+        // background-color: antiquewhite;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 40px;
     }
 
-    @include e(lessons){
-        background-color: rgb(69, 206, 89);
+    @include e(qa) {
+        // background-color: rgb(69, 206, 89);
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 40px;
     }
 
-
+    @include e(path) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+    }
 }

@@ -1,10 +1,8 @@
 <template>
     <div>
-        
         <Nav :items="items"></Nav>
         <Main desc="开始您的个性化学习之旅！"></Main>
     </div>
-    
 </template>
 
 <script setup lang="ts">
@@ -15,15 +13,15 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 router.beforeEach((to, from) => {
-    if (to.hash){
+    if (to.hash) {
         const elem = document.querySelector(to.hash)
         if (elem) {
-            elem.scrollIntoView({behavior: 'smooth'})
+            elem.scrollIntoView({ behavior: 'smooth' })
         }
     }
 })
 
-// const items = ['开始', '关于我们', '课程', '登录']
+// const items = ['开始', '知识图谱', '智能问答', '路径推荐']
 
 
 const items = [
@@ -34,20 +32,23 @@ const items = [
         }
     },
     {
-        msg: '关于我们',
+        msg: '知识图谱',
         func: () => {
-            router.push("#introduction")
+            router.push("#kg")
         }
     },
     {
-        msg: '课程',
+        msg: '智能问答',
         func: () => {
-            router.push("#lessons")
+            router.push("#qa")
         }
     },
     {
-        msg: '登录',
-        func: () => {}
+        msg: '路径推荐',
+        func: () => {
+            router.push("#path")
+
+        }
     }
 ]
 
