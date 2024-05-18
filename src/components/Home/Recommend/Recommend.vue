@@ -21,7 +21,7 @@
 
             <div :class="ns.e('courses')" v-if="precourse.length > 0">
                 <div :class="ns.e('course-title')">
-                    <span>请选择已经学习过的课程</span>
+                    <span>请选择尚未学习过的课程</span>
                 </div>
 
                 <el-checkbox-group v-model="selectedCourses">
