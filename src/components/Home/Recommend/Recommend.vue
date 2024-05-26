@@ -5,10 +5,10 @@
         </div>
         <div :class="ns.e('content-wrapper')" v-if="courseVisible">
             <el-form :model="formData">
-                <el-form-item prop="course" label="想学习的课程">
+                <el-form-item prop="course" label="想学习的课程：">
                     <el-input v-model="formData.course"></el-input>
                 </el-form-item>
-                <el-form-item prop="time" label="预期学习周期">
+                <el-form-item prop="time" label="预期学习周期：">
                     <el-input v-model="formData.time">
                         <template #append>
                             <span>周</span>
@@ -70,8 +70,7 @@ import Button from '@/components/Common/Button.vue';
 import { useNamespace } from '@/utils/useNamespace';
 import { getPrecourse, getPath } from '@/utils/apis'
 import { ref, reactive } from 'vue'
-import axios from 'axios'
-import KnowledgeGraph from '../KG/KnowledgeGraph.vue';
+
 
 interface FormData {
     course: string
@@ -174,7 +173,6 @@ const ns = useNamespace('recommend')
         align-items: center;
         align-self: flex-start;
 
-        padding-bottom: 40px;
     }
 
     @include e(content-wrapper) {
@@ -182,6 +180,7 @@ const ns = useNamespace('recommend')
         height: 80%;
         background-color: white;
 
+        border-radius: 10px;
         margin: 0 auto;
 
 
@@ -190,6 +189,7 @@ const ns = useNamespace('recommend')
             display: flex;
             align-items: center;
             justify-content: space-around;
+            padding: 10px 0;
         }
 
         .el-form-item {
@@ -207,6 +207,11 @@ const ns = useNamespace('recommend')
 
         .el-input__inner {
             font-size: 16px;
+        }
+
+        .el-input__wrapper.is-focus {
+            --el-input-focus-border-color: black;
+            box-shadow: 0 0 0 2px var(--el-input-focus-border-color) inset;
         }
 
 

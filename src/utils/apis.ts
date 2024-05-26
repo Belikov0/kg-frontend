@@ -4,11 +4,27 @@ import axios from 'axios'
 export const baseURL = 'http://39.105.221.59:5000'
 
 export const getCourses = async () => {
-    return await axios.get(baseURL + '/zhxh/courses').then((res) => res.data)
+    return await axios({
+        url: '/zhxh/courses',
+        method: 'get',
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+    }).then((res) => res.data)
 }
 
 export const getData = async (id: string) => {
-    return await axios.get(baseURL + `/zhxh/course?id=${id}`).then((res) => res.data)
+    return await axios({
+        url: `/zhxh/course?id=${id}`,
+        method: 'get',
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+    }).then((res) => res.data)
 }
 
 export const getDataByArbitraryId = async (id: string) => {

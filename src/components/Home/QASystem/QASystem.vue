@@ -75,15 +75,6 @@ const handleClickSend = async () => {
     inputDisabled.value = false
 }
 
-
-
-
-
-
-
-
-
-
 const ns = useNamespace('qa')
 </script>
 
@@ -117,7 +108,7 @@ const ns = useNamespace('qa')
         height: 80%;
         background-color: white;
 
-        border-radius: 10px;
+        border-radius: 15px;
         margin: 0 auto;
         position: relative;
 
@@ -128,8 +119,7 @@ const ns = useNamespace('qa')
 
     @include e(conver-panel) {
         width: 100%;
-        height: 500px;
-        border-radius: 5px;
+        height: 400px;
         margin: 0 auto;
 
         box-sizing: border-box;
@@ -141,7 +131,9 @@ const ns = useNamespace('qa')
 
         overflow: scroll;
         scrollbar-width: auto;
-        border: 1px black solid;
+        border: 2px black solid;
+        border-radius: 10px;
+
 
         div {
             display: inline-block;
@@ -149,6 +141,7 @@ const ns = useNamespace('qa')
             font-size: 16px;
             padding: 15px;
             border: gray 1px solid;
+            border-radius: 10px;
             flex-grow: 0;
         }
 
@@ -180,6 +173,9 @@ textarea {
     width: 100%;
     height: 100px;
     resize: none;
+
+    border: 2px black solid;
+    border-radius: 10px;
 
     font-size: 20px;
 }
